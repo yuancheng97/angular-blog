@@ -16,7 +16,8 @@ export class Post {
 export class BlogService {
 	private current: Post;
 	public isDraftNew:boolean;
-
+	//posts is the current posts in the list
+	public posts: Post[];
 	private handleError(err: any): Promise<any>{
 		console.log(err.message);
 		return Promise.reject(new Error(String(err.status)));
@@ -47,6 +48,7 @@ export class BlogService {
 		let url = `api/${username}`;
 		return this.http.get<Post []>(url).toPromise()
 		.catch(this.handleError);
+		
 	}
 
 	getPost(username: string, postid: number): Promise<Post> {

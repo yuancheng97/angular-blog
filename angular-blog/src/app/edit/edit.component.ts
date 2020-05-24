@@ -15,7 +15,7 @@ export class EditComponent implements OnInit {
 	body: string;
 	title: string;
 	isNew: boolean;
-	@Output() refresh = new EventEmitter<number>();
+	//@Output() refresh = new EventEmitter<number>();
 
 	constructor(private blogService: BlogService, private location: Location, 
 	 private route: ActivatedRoute,private router:Router) { 
@@ -39,19 +39,33 @@ export class EditComponent implements OnInit {
 		if(!this.blogService.isDraftNew && this.post.title == this.title &&this.post.body== this.body)
 			return;
 		if(this.blogService.isDraftNew){
+			//new post
 			this.blogService.newPost(this.blogService.currentUser,this.post).then(
 				()=>{
-				console.log("made new post");
-				this.refresh.emit(1);
-			})
+				  	this.blogService.fetchPosts(this.blogService.currentUser)
+  					.then(posts=>{
+  						this.blogService.posts = posts;
+  						console.log("post size is: "+this.blogService.posts.length);
+  						console.log("made new post");}
+  						)
+					
+				}
+				)
 		}
 		else{
+			//changed old post
 			this.blogService.updatePost(this.blogService.currentUser,this.post).
 			then(()=>{
-				console.log("updated the post");
-				this.refresh.emit(1);
+				
+				this.blogService.fetchPosts(this.blogService.currentUser)
+  					.then(posts=>{
+  						this.blogService.posts = posts;
+  						console.log("posts size is: "+this.blogService.posts.length);
+						console.log("updated the post");
+					})
+					
 			}
-				);
+			);
 
 		}
 
@@ -64,9 +78,14 @@ export class EditComponent implements OnInit {
 		}
 		this.blogService.deletePost(this.blogService.currentUser,this.post.postid).
 		then(()=>{
-			this.router.navigate(['/']);
-			this.refresh.emit(1);}
-			).catch(err=>console.log(err));
+			this.blogService.fetchPosts(this.blogService.currentUser)
+				.then(posts=>{
+					this.blogService.posts = posts;
+					console.log("posts size is: "+this.blogService.posts.length);
+					console.log("deleted the post");
+					this.router.navigate(['/']);
+			})
+			}).catch(err=>console.log(err));
 	}
 
 	/*

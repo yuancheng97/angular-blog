@@ -10,20 +10,23 @@ import { Input } from '@angular/core';
 export class ListComponent implements OnInit {
 	selectedPost: Post;
 
-	posts: Post[];
+	//posts: Post[];
 
 	username: String;
 
 	messages: String[] = [];
 
-  @Input() refresh():void{
+  /*@Input() refresh():void{
     console.log("refreshing");
     this.getPost();
+  }*/
+
+  constructor(public blogService: BlogService, private router: Router,
+    private route: ActivatedRoute) { 
+    //this.route.paramMap.subscribe(() => this.getPost());
   }
 
-  constructor(private blogService: BlogService, private router: Router) { 
-
-  }
+  
 
   ngOnInit(): void {
   	this.getPost();
@@ -32,7 +35,10 @@ export class ListComponent implements OnInit {
 
   getPost(): void {
   	this.blogService.fetchPosts(this.blogService.currentUser)
-  		.then(posts => this.posts = posts);
+  		.then(
+        //posts => this.posts = posts
+          posts=>this.blogService.posts = posts
+        );
   }
 
   onSelect(post: Post): void{
@@ -47,7 +53,7 @@ export class ListComponent implements OnInit {
 
   onNew(): void{
   	let postid: number = -1;
-  	for (let post of this.posts){
+  	for (let post of this.blogService.posts){
   		postid = Math.max(post.postid, postid);
   	}
   	let newPost: Post = {
