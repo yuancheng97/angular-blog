@@ -1,1 +1,9 @@
-<app-list></app-list>
+<div class = "split left">
+	
+		<app-list #list></app-list>
+	
+</div>
+<div class = "split right">
+		<router-outlet (refresh) ='list.refresh()' ></router-outlet>
+	
+</div>

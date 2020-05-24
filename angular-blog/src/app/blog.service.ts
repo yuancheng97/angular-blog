@@ -15,6 +15,7 @@ export class Post {
 })
 export class BlogService {
 	private current: Post;
+	public isDraftNew:boolean;
 
 	private handleError(err: any): Promise<any>{
 		console.log(err.message);

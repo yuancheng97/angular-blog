@@ -1,0 +1,22 @@
+<div *ngIf="post">
+	<h2> Postid:{{post.postid}} Edit Page</h2>
+
+	<div>
+	  <label>title:
+	    <input type = "text" [(ngModel)]="post.title" placeholder="title"/>
+	  </label>
+	</div>
+	<div>
+	  <label>body:
+	    <input type = "textarea" [(ngModel)]="post.body" placeholder="body"/>
+	  </label>
+	</div>
+	<div>Created:{{post.created|date:"medium"}}</div>
+	<div>Modified:{{post.modified|date:"medium"}}</div>
+
+<button (click)="preview()">Preview</button>
+<button (click)="save()">Save</button>
+<button (click)="delete()">Delete</button>
+
+
+</div>

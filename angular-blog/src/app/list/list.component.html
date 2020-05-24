@@ -1,22 +1,25 @@
-<br>
-<button (click)="onNew()">new</button>
-<br>
-<h2> Blog List </h2>
-<br>
-<ul class="blogs">
-	<li *ngFor="let post of posts"
-		[class.selected]="post===selectedPost"
-		(click)="onSelect(post)">
-		<span class="block"> {{post.created}} </span> {{post.title}}
-	</li>
-</ul>
+<div class = "heroes">
+		<br>
+	<button (click)="onNew()">new</button>
+	<br>
+	<h2> Blog List </h2>
+	<br>
+	<ul class="blogs">
+		<li *ngFor="let post of posts"
+			[class.selected]="post===selectedPost"
+			(click)="onSelect(post)" class="badge">
+			<div>{{post.created|date:"medium"}}</div>
+			<div> {{post.title}}</div>
 
-
-<div *ngIf="messages.length">
-	<h2> debugging info </h2>
-	<ul>
-		<li *ngFor="let message of messages">
-			<span> {{message}} </span>
 		</li>
-	</ul> 
-</div>
+	</ul>
+
+
+	<div *ngIf="messages.length">
+		<h2> debugging info </h2>
+		<ul>
+			<li *ngFor="let message of messages">
+				<span> {{message}} </span>
+			</li>
+		</ul> 
+	</div>
