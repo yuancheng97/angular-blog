@@ -36,11 +36,11 @@ export class EditComponent implements OnInit {
 		console.log("post body: "+this.post.body);
 		console.log("record title: "+this.title);
 		console.log("record body: "+this.body);
-		if(!this.blogService.isDraftNew && this.post.title == this.title &&this.post.body== this.body){
+		/*if(!this.blogService.isDraftNew && this.post.title == this.title &&this.post.body== this.body){
 			console.log(this.post.created);
 			console.log(this.post.modified);
 			return;
-		}
+		}*/
 		if(this.blogService.isDraftNew){
 			//new post
 			this.post.modified = new Date();
