@@ -235,7 +235,7 @@ router.put('/:username/:postid',async function(req,res,next){
 				{ "username":username, "postid":postid},
 				{
 					$set: {
-						"created":nowtime,
+						//"created":nowtime,
 						"modified":nowtime,
 						"title":title,
 						"body":body
