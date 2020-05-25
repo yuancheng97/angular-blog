@@ -17,6 +17,8 @@ export class BlogService {
 	private current: Post;
 	public isDraftNew:boolean;
 
+	//posts is the current posts in the list
+	public posts: Post[];
 	private handleError(err: any): Promise<any>{
 		console.log(err.message);
 		return Promise.reject(new Error(String(err.status)));
@@ -44,33 +46,34 @@ export class BlogService {
 
 
 	fetchPosts(username: string): Promise<Post[]>{
-		let url = `api/${username}`;
+		let url = `/api/${username}`;
 		return this.http.get<Post []>(url).toPromise()
 		.catch(this.handleError);
+		
 	}
 
 	getPost(username: string, postid: number): Promise<Post> {
-		let url = `api/${username}/${postid}`;
+		let url = `/api/${username}/${postid}`;
 		return this.http.get<Post>(url).toPromise()
 		.catch(this.handleError);
 	}
 
 	newPost(username: string, post: Post): Promise<void> {
 		let postid = post.postid;
-		let url = `api/${username}/${postid}`;
+		let url = `/api/${username}/${postid}`;
 		return this.http.post<Post>(url, post).toPromise()
 		.catch(this.handleError);
 	}
 
 	updatePost(username: string, post: Post): Promise<void> {
 		let postid = post.postid;
-		let url = `api/${username}/${postid}`;
+		let url = `/api/${username}/${postid}`;
 		return this.http.put<Post>(url, post).toPromise()
 		.catch(this.handleError);		
 	}
 
 	deletePost(username: string, postid: number): Promise<void> {
-		let url = `api/${username}/${postid}`;
+		let url = `/api/${username}/${postid}`;
 		return this.http.delete(url).toPromise()
 		.catch(this.handleError);		
 	}

@@ -15,7 +15,7 @@ export class EditComponent implements OnInit {
 	body: string;
 	title: string;
 	isNew: boolean;
-	@Output() refresh = new EventEmitter<number>();
+	//@Output() refresh = new EventEmitter<number>();
 
 	constructor(private blogService: BlogService, private location: Location, 
 	 private route: ActivatedRoute,private router:Router) { 
@@ -36,24 +36,48 @@ export class EditComponent implements OnInit {
 		console.log("post body: "+this.post.body);
 		console.log("record title: "+this.title);
 		console.log("record body: "+this.body);
-		if(!this.blogService.isDraftNew && this.post.title == this.title &&this.post.body== this.body)
+		if(!this.blogService.isDraftNew && this.post.title == this.title &&this.post.body== this.body){
+			console.log(this.post.created);
+			console.log(this.post.modified);
 			return;
+		}
 		if(this.blogService.isDraftNew){
+			//new post
+			this.post.modified = new Date();
+			this.post.created = new Date();
 			this.blogService.newPost(this.blogService.currentUser,this.post).then(
 				()=>{
-				console.log("made new post");
-				this.refresh.emit(1);
-			})
+				  	this.blogService.fetchPosts(this.blogService.currentUser)
+  					.then(posts=>{
+  						this.blogService.posts = posts;
+  						console.log("post size is: "+this.blogService.posts.length);
+  						console.log("made new post");}
+  						)
+
+				}
+				)
 		}
 		else{
+			// changed old post
+			this.post.modified = new Date();
+			console.log(this.post.created);
+			console.log(this.post.modified);
 			this.blogService.updatePost(this.blogService.currentUser,this.post).
 			then(()=>{
-				console.log("updated the post");
-				this.refresh.emit(1);
-			}
-				);
+
+				this.blogService.fetchPosts(this.blogService.currentUser)
+  					.then(posts=>{
+  						this.blogService.posts = posts;
+  						console.log(posts[0].created);
+  						console.log(posts[0].modified);
+  				// 		console.log("posts size is: "+this.blogService.posts.length);
+						// console.log("updated the post");
+					})
+
+			});
 
 		}
+		this.blogService.isDraftNew = false;
 
 	}
 
@@ -64,9 +88,12 @@ export class EditComponent implements OnInit {
 		}
 		this.blogService.deletePost(this.blogService.currentUser,this.post.postid).
 		then(()=>{
-			this.router.navigate(['/']);
-			this.refresh.emit(1);}
-			).catch(err=>console.log(err));
+			this.blogService.fetchPosts(this.blogService.currentUser)
+				.then(posts=>{
+					this.blogService.posts = posts;
+					this.router.navigate(['/']);
+			})
+			}).catch(err=>console.log(err));
 	}
 
 	/*
@@ -100,7 +127,6 @@ export class EditComponent implements OnInit {
 		}
 		else{
 			//from new or clicking
-			
 			this.title = this.post.title;
 			this.body = this.post.body;
 		}

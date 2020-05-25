@@ -10,19 +10,18 @@ import { Input } from '@angular/core';
 export class ListComponent implements OnInit {
 	selectedPost: Post;
 
-	posts: Post[];
+	//posts: Post[];
 
 	username: String;
 
-	messages: String[] = [];
-
-  @Input() refresh():void{
+  /*@Input() refresh():void{
     console.log("refreshing");
     this.getPost();
-  }
+  }*/
 
-  constructor(private blogService: BlogService, private router: Router) { 
-
+  constructor(public blogService: BlogService, private router: Router,
+    private route: ActivatedRoute) { 
+    //this.route.paramMap.subscribe(() => this.getPost());
   }
 
   ngOnInit(): void {
@@ -32,7 +31,10 @@ export class ListComponent implements OnInit {
 
   getPost(): void {
   	this.blogService.fetchPosts(this.blogService.currentUser)
-  		.then(posts => this.posts = posts);
+      .then(
+        //posts => this.posts = posts
+          posts=>this.blogService.posts = posts
+        );
   }
 
   onSelect(post: Post): void{
@@ -41,19 +43,17 @@ export class ListComponent implements OnInit {
   	this.selectedPost = post;
     let url = `/edit/${post.postid}`;
     this.router.navigateByUrl(url);
-
-  	this.messages.push(`Selected the post with id = ${post.postid} and title = ${post.title}`);
   }
 
   onNew(): void{
   	let postid: number = -1;
-  	for (let post of this.posts){
+    for (let post of this.blogService.posts){
   		postid = Math.max(post.postid, postid);
   	}
   	let newPost: Post = {
   		postid: postid+1,
-  		created: new Date(Date.now()),
-  		modified: new Date(Date.now()),
+  		created: new Date(),
+  		modified: new Date(),
   		title:"",
   		body:""
   	}
@@ -61,7 +61,6 @@ export class ListComponent implements OnInit {
     this.blogService.isDraftNew = true;
     let url = `/edit/${newPost.postid}`;
     this.router.navigateByUrl(url);
-  	this.messages.push(`Created the post with id = ${newPost.postid}`);
 
 
   }

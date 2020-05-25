@@ -1,0 +1,31 @@
+.title {
+  display: inline-block;
+  color: white;
+  font-family : Arial;
+  font-size: x-large;
+  position: relative;
+  left: 2em;
+}
+
+.body {
+  display: inline-block;
+  color: white;
+  font-family : Arial;
+  font-size: medium;
+  position: relative;
+  left: 3em;
+}
+
+button {
+  margin-top: 20px;
+  font-family: Arial;
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #cfd8dc;
+}
