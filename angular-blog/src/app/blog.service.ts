@@ -16,7 +16,6 @@ export class Post {
 export class BlogService {
 	private current: Post;
 	public isDraftNew:boolean;
-
 	//posts is the current posts in the list
 	public posts: Post[];
 	private handleError(err: any): Promise<any>{

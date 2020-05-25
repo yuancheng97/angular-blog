@@ -24,6 +24,8 @@ export class ListComponent implements OnInit {
     //this.route.paramMap.subscribe(() => this.getPost());
   }
 
+  
+
   ngOnInit(): void {
   	this.getPost();
 

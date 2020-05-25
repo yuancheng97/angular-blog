@@ -53,7 +53,6 @@ export class EditComponent implements OnInit {
   						console.log("post size is: "+this.blogService.posts.length);
   						console.log("made new post");}
   						)
-
 				}
 				)
 		}
